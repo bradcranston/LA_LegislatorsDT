@@ -7,7 +7,7 @@ body {
   color: #000;
   background-color: #fff;
   margin: 10;
-  overflow: hidden;
+  overflow: auto;
 }
 
 p{
@@ -42,4 +42,168 @@ button {
   border: 1px solid #0091CE;
   background-color: #0091CE;
   color: #fff;
+}
+
+tr { 
+  border: solid;
+  border-color: lightgrey;
+  border-width: 1px 0;
+}
+
+tr:first-child {
+  border-top: none;
+}
+
+tr:last-child {
+  border-bottom: none;
+}
+
+.client-info{
+  
+  width: 20;
+}
+
+
+.subText{
+  font-size: 12px;
+  font-weight: 100;
+  cursor: pointer; /* Mouse pointer on hover */
+
+}
+
+.bold{
+  font-weight: bold;
+  font-size: 15px;
+  width: 130px;
+  cursor: pointer; /* Mouse pointer on hover */
+}
+
+.district{
+  font-weight: bold;
+  font-size: 15px;
+}
+
+
+
+.dataTables_wrapper table thead{
+  display:none;
+}
+
+.i-circle-red {
+  margin-left: 10px;
+  display: inline-block;
+  background-color: #f4a4a4;
+  color: #000000;
+  font-size: 14px;
+  text-align: center;
+  width: 10px;
+  height: 10px;
+  padding: 10px;
+  line-height: 10px;
+}
+
+.i-circle-blue {
+  margin-left: 10px;
+  display: inline-block;
+  background-color: #ADD8E6;
+  color: #000000;
+  font-size: 14px;
+  text-align: center;
+  width: 10px;
+  height: 10px;
+  padding: 10px;
+  line-height: 10px;
+}
+
+
+
+/* Style buttons */
+.buttonMail {
+  background-color: white; /* Blue background */
+  border: none; /* Remove borders */
+  color: grey; /* White text */
+  padding:0px 0px 0px 0px; /* Some padding */
+  font-size: 12px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.buttonMail:hover {
+}
+
+.buttonMark {
+  background-color: white; /* Blue background */
+  border: none; /* Remove borders */
+  color: grey; /* White text */
+  padding:0px 0px 0px 4px; /* Some padding */
+  font-size: 16px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
+
+.constBtnClass{
+  background-color: white; /* Blue background */
+  border-color: grey; /* Blue background */
+  border-width: 1px; /* Remove borders */
+  color: grey; /* White text */
+  padding:0px 0px 0px 0px; /* Some padding */
+  font-size: 9px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+  text-align: center;
+  width: 34px;
+  font-weight: 700;
+  height: 35px;
+}
+
+.profileBtnClass{
+  background-color: white; /* Blue background */
+  border-color: grey; /* Blue background */
+  border-width: 1px; /* Remove borders */
+  color: grey; /* White text */
+  padding:0px; /* Some padding */
+  font-size: 14px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+  text-align: center;
+  width: 30px;
+  height: 35px;
+  font-weight: 700;
+}
+
+.vlRed {
+  border-left: 6px solid red;
+  height: 80%;
+  width: 0px;
+}
+
+.vlGreen {
+  border-left: 6px solid green;
+  height: 80%;
+  width: 0px;
+}
+
+.vlClear {
+  border-left: 6px solid ;
+  border-color: white;
+  height: 80%;
+  width: 0px;
+}
+
+.dataTables_filter {
+  position: relative;
+}
+
+.dataTables_filter input {
+  width: 250px;
+  height: 32px;
+  background: #fcfcfc;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
+  text-indent: 10px;
+}
+
+.dataTables_filter .fa-search {
+  position: absolute;
+  top: 10px;
+  left: auto;
+  right: 10px;
 }
