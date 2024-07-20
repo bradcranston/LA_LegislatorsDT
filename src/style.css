@@ -1,14 +1,16 @@
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Verdana';
   font-size: 16px;
   line-height: 1;
   color: #000;
   background-color: #fff;
-  margin: 10;
-  overflow: auto;
+  margin: 0;
+  zoom:100%;
 }
+
+
 
 p{
   color:#282828;
@@ -25,15 +27,6 @@ h1 {
   margin: 0 0 10px;
 }
 
-.tintedBlackLeft {
-  background-color:#00000033;
-  color: #fff;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.2;
-  padding:11px 11px 11px 0px;
-}
 
 button {
   padding: 5px 9px 5px 9px;
@@ -44,11 +37,7 @@ button {
   color: #fff;
 }
 
-tr { 
-  border: solid;
-  border-color: lightgrey;
-  border-width: 1px 0;
-}
+th { white-space: nowrap; }
 
 tr:first-child {
   border-top: none;
@@ -61,7 +50,21 @@ tr:last-child {
 .client-info{
   
   width: 20;
+
 }
+
+.headerDiv{
+  height: 14px;
+  font-family: 'Verdana';
+  font-size: 14px;
+  font-weight: 800;
+  padding: 7px;
+  background-color: #b0bfce;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
 
 
 .subText{
@@ -72,25 +75,40 @@ tr:last-child {
 }
 
 .bold{
+  color: #000;
   font-weight: bold;
-  font-size: 15px;
-  width: 130px;
+  font-size: 13px;
+  width: 120px;
   cursor: pointer; /* Mouse pointer on hover */
+}
+
+.infoOffice{
+  font-size:10px;
+  color: #000;
 }
 
 .district{
   font-weight: bold;
-  font-size: 15px;
+  font-size: 12px;
+  margin-right: 10px;
+  color:gray;
+  text-size-adjust:auto;
+  width:30px;
 }
 
+#float {
+        position: fixed;
+        top: 3em;
+        right: 2em;
+        z-index: 100;
+    }
 
-
-.dataTables_wrapper table thead{
-  display:none;
-}
+    .dt-scroll-headInner{
+      height: 0px;
+    }
 
 .i-circle-red {
-  margin-left: 10px;
+  margin-left: 3px;
   display: inline-block;
   background-color: #f4a4a4;
   color: #000000;
@@ -103,7 +121,7 @@ tr:last-child {
 }
 
 .i-circle-blue {
-  margin-left: 10px;
+  margin-left: 3px;
   display: inline-block;
   background-color: #ADD8E6;
   color: #000000;
@@ -115,7 +133,9 @@ tr:last-child {
   line-height: 10px;
 }
 
-
+.container {
+  padding:0px 0px 0px 4px; /* Some padding */
+}
 
 /* Style buttons */
 .buttonMail {
@@ -125,20 +145,25 @@ tr:last-child {
   padding:0px 0px 0px 0px; /* Some padding */
   font-size: 12px; /* Set a font size */
   cursor: pointer; /* Mouse pointer on hover */
-}
-
-/* Darker background on mouse-over */
-.buttonMail:hover {
+  position: relative;
+  bottom:2px;
 }
 
 .buttonMark {
   background-color: white; /* Blue background */
   border: none; /* Remove borders */
   color: grey; /* White text */
-  padding:0px 0px 0px 4px; /* Some padding */
+  padding:0px 0px 0px 0px; /* Some padding */
   font-size: 16px; /* Set a font size */
   cursor: pointer; /* Mouse pointer on hover */
+  top:2px;
+  position: relative;
 }
+
+/* Darker background on mouse-over */
+.buttonMail:hover {
+}
+
 
 .constBtnClass{
   background-color: white; /* Blue background */
@@ -152,6 +177,10 @@ tr:last-child {
   width: 34px;
   font-weight: 700;
   height: 35px;
+}
+
+td:nth-child(5){
+  width: 30;
 }
 
 .profileBtnClass{
@@ -207,3 +236,15 @@ tr:last-child {
   left: auto;
   right: 10px;
 }
+
+
+
+.dt-scroll-body{
+  border-color: #b0bfce;
+color: #b0bfce;
+}
+
+
+  div.dt-scroll-body {
+    border-bottom-width: 10px;
+  }
