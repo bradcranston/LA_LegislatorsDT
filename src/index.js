@@ -1,6 +1,7 @@
 //import data from "./legislator";
 
 let extraData = "None";
+let displayCom = false;
 
 window.loadData = (json, officeFilter, platform) => {
   const data = JSON.parse(json);
@@ -16,9 +17,11 @@ window.loadData = (json, officeFilter, platform) => {
     row.DistrictNum = Number(row.District.replace(/\D/g, ""));
   });
 
-   //add an element for district that are only letters for sorting
-   formattedData.forEach(function (row) {
-    row.DistrictLet = row.District.split('').filter(char => /[a-zA-Z]/.test(char));
+  //add an element for district that are only letters for sorting
+  formattedData.forEach(function (row) {
+    row.DistrictLet = row.District.split("").filter((char) =>
+      /[a-zA-Z]/.test(char)
+    );
   });
 
   let filteredData = [];
@@ -40,10 +43,8 @@ window.loadData = (json, officeFilter, platform) => {
 
   const finalData = filteredData;
 
-
-  let committeeName = 'Legislators';
+  let committeeName = "Legislators";
   //console.log(finalData);
-
 
   //get rid of the fieldData level
   const formatData = data.data.map((e) =>
@@ -59,12 +60,9 @@ window.loadData = (json, officeFilter, platform) => {
     },
   });
 
-
-
-
   const table = $("#table").DataTable({
     data: finalData,
-    dom: 'lrt',
+    dom: "lrt",
     paging: false,
     scrollResize: true,
     scrollCollapse: true,
@@ -73,13 +71,16 @@ window.loadData = (json, officeFilter, platform) => {
     ordering: true,
     info: false,
     headerCallback: function (thead, data, start, end, display) {
-      const headerDiv = document.getElementById("headerDiv")
-      const officeTitle = officeFilter === 'Representative' ? 'House' :
-      officeFilter === 'Senator' ? 'Senate' :
-      committeeName 
-      ;
-      headerDiv.textContent = officeTitle + ' ('+(end - start)+')';
-
+      const headerDiv = document.getElementById("headerDiv");
+      const officeTitle =
+        displayCom === true
+          ? committeeName
+          : officeFilter === "Representative"
+          ? "House"
+          : officeFilter === "Senator"
+          ? "Senate"
+          : committeeName;
+      headerDiv.textContent = officeTitle + " (" + (end - start) + ")";
     },
     columns: [
       {
@@ -93,9 +94,10 @@ window.loadData = (json, officeFilter, platform) => {
         visible: false,
       },
       {
-        data: "DistrictNum",
+        data: "District",
         name: "district",
         visible: false,
+        type: "alphanum",
       },
       {
         data: "Value",
@@ -133,13 +135,25 @@ window.loadData = (json, officeFilter, platform) => {
         data: "CommitteeList",
         name: "committeeList",
         visible: false,
-      },{
+      },
+      {
         data: "DistrictLet",
         name: "districtLet",
         visible: false,
-      },{
+      },
+      {
         data: "Email",
         name: "email",
+        visible: false,
+      },
+      {
+        data: "Score",
+        name: "score",
+        visible: false,
+      },
+      {
+        data: "GroupList",
+        name: "GroupList",
         visible: false,
       },
       {
@@ -233,6 +247,9 @@ window.loadData = (json, officeFilter, platform) => {
           };
           name.classList.add("bold");
           name.textContent = row.FirstName + " " + row.LastName;
+          if (row.NewlyElected.length > 0) {
+            name.classList.add("green");
+          }
           const infoOffice = document.createElement("div");
           infoOffice.textContent = row.Office;
           infoOffice.classList.add("infoOffice");
@@ -259,6 +276,8 @@ window.loadData = (json, officeFilter, platform) => {
             $district.textContent = row.District;
           } else if (extraData === "Value") {
             $district.textContent = row.Value;
+          } else if (extraData === "Score") {
+            $district.textContent = row.Score;
           }
           return $district;
         },
@@ -285,27 +304,6 @@ window.loadData = (json, officeFilter, platform) => {
           return $OfficeAdd;
         },
         visible: false,
-        orderable: false,
-      },
-      {
-        //Const Button
-        render: function (data, type, row) {
-          const $constButton = document.createElement("button");
-          $constButton.onclick = function () {
-            let result = (({ _ID }) => ({ _ID }))(row);
-            result.action = "constCard";
-            callFM(result);
-            event.stopPropagation();
-          };
-          $constButton.classList.add("constBtnClass");
-          const mems = document.createElement("div");
-          mems.textContent = row.CountMembers + " M";
-          const chu = document.createElement("div");
-          chu.textContent = row.CountChurches + " C";
-          $constButton.appendChild(mems);
-          $constButton.appendChild(chu);
-          return $constButton;
-        },
         orderable: false,
       },
       {
@@ -340,6 +338,35 @@ window.loadData = (json, officeFilter, platform) => {
         },
         orderable: false,
       },
+      {
+        //Const Button
+        render: function (data, type, row) {
+          const $constButton = document.createElement("button");
+          $constButton.onclick = function () {
+            let result = (({ _ID }) => ({ _ID }))(row);
+            result.action = "constCard";
+            callFM(result);
+            event.stopPropagation();
+          };
+          $constButton.classList.add("constBtnClass");
+          const mems = document.createElement("div");
+          mems.textContent = row.CountMembers + " M";
+          const chu = document.createElement("div");
+          chu.textContent = row.CountChurches + " C";
+          $constButton.appendChild(mems);
+          $constButton.appendChild(chu);
+          return $constButton;
+        },
+        orderable: false,
+      },     {
+        data: "isChair",
+        name: "isChair",
+        visible: false,
+      },     {
+        data: "isViceChair",
+        name: "isViceChair",
+        visible: false,
+      }
     ],
   });
 
@@ -356,18 +383,72 @@ window.loadData = (json, officeFilter, platform) => {
       .draw();
   };
 
+  jQuery.fn.dataTable.ext.type.order["alphanum-asc"] = function (a, b) {
+    const extractChunks = (str) => {
+      return str
+        .match(/(\d+|\D+)/g)
+        .map((chunk) =>
+          isNaN(chunk) ? chunk.toLowerCase() : parseInt(chunk, 10)
+        );
+    };
+
+    const chunksA = extractChunks(a || "");
+    const chunksB = extractChunks(b || "");
+
+    for (let i = 0; i < Math.max(chunksA.length, chunksB.length); i++) {
+      const chunkA = chunksA[i] || "";
+      const chunkB = chunksB[i] || "";
+
+      if (chunkA < chunkB) return -1;
+      if (chunkA > chunkB) return 1;
+    }
+
+    return 0;
+  };
+
+  jQuery.fn.dataTable.ext.type.order["alphanum-desc"] = function (a, b) {
+    return jQuery.fn.dataTable.ext.type.order["alphanum-asc"](b, a);
+  };
+
+  // Apply custom sorting in your function
   window.sortDistrict = function () {
     extraData = "District";
     table.column(3).cells().invalidate();
     table.column(3).render();
+
     table
       .order([
-        { name: "districtLet", dir: "asc" },
-        { name: "district", dir: "asc" },
+        //      { name: "districtLet", dir: "asc" }, // Adjust as necessary for your use case
+        { name: "district", dir: "asc" }, // Adjust as necessary for your use case
         { name: "lastName", dir: "asc" },
         { name: "firstName", dir: "asc" },
       ])
       .draw();
+  };
+
+  window.sortScore = function () {
+    extraData = "Score";
+    table.column(3).cells().invalidate();
+    table.column(3).render();
+    table
+      .order([
+        { name: "score", dir: "desc" },
+        { name: "lastName", dir: "asc" },
+        { name: "firstName", dir: "asc" },
+      ])
+      .draw();
+  };
+
+  window.showScore = function () {
+    extraData = "Score";
+    table.column(3).cells().invalidate();
+    table.column(3).render();
+  };
+
+  window.showData = function (data) {
+    extraData = data;
+    table.column(3).cells().invalidate();
+    table.column(3).render();
   };
 
   window.sortValue = function () {
@@ -420,12 +501,113 @@ window.loadData = (json, officeFilter, platform) => {
     table.columns([5]).search("").draw();
   };
 
-  window.filterCom = function (index) {
+  window.filterGroup = function (index, groupId) {
+    // Set the index as the group name
     committeeName = index;
-    table.columns([9]).search(index).draw();
+    displayCom = true;
+  
+    // Filter by group ID
+    table.columns([13]).search(groupId).draw();
+  
+    // Clear any existing highlights or extra styles
+    table.rows().every(function () {
+      const cell = $(this.node()).find("td:eq(2)");
+      cell.removeClass("highlight-cell");
+    });
+  
+    table.column().cells().invalidate();
+    table.column().render();
+  
+    // Redraw the table with sorting based on name
+    table
+      .order([
+        { name: "lastName", dir: "asc" },
+        { name: "firstName", dir: "asc" },
+      ])
+      .draw();
   };
+  
+
+  window.filterCom = function (index, comId, chair, vicechair) {
+    committeeName = index;
+    displayCom = true;
+
+    // Filter by committee ID
+    table.columns([9]).search(comId).draw();
+
+    // Helper function to normalize names
+    function normalizeName(name) {
+        const nameParts = name.split(/,|\s+/).filter(Boolean);
+        let firstName = "";
+        let middleInitial = "";
+        let lastName = "";
+
+        if (name.includes(",")) {
+            [lastName, firstName] = nameParts.map((part) => part.trim());
+        } else if (nameParts.length === 2) {
+            [firstName, lastName] = nameParts.map((part) => part.trim());
+        } else if (nameParts.length === 3) {
+            [firstName, middleInitial, lastName] = nameParts.map((part) => part.trim());
+        }
+
+        return { firstName, middleInitial, lastName };
+    }
+
+    const chairName = normalizeName(chair);
+    const vicechairName = normalizeName(vicechair);
+
+    // Add custom flags to identify chair and vicechair rows
+    table.rows().every(function () {
+        const rowData = this.data();
+
+        const isChair =
+            rowData.FirstName === chairName.firstName &&
+            (!chairName.middleInitial || rowData.MiddleName?.startsWith(chairName.middleInitial)) &&
+            rowData.LastName === chairName.lastName;
+
+        const isViceChair =
+            rowData.FirstName === vicechairName.firstName &&
+            (!vicechairName.middleInitial || rowData.MiddleName?.startsWith(vicechairName.middleInitial)) &&
+            rowData.LastName === vicechairName.lastName;
+
+        rowData.isChair = isChair;
+        rowData.isViceChair = isViceChair;
+
+        const cell = $(this.node()).find("td:eq(2)");
+        cell.removeClass("highlight-cell chairred chairblue vicechairred vicechairblue");
+
+        if (isChair) {
+            if (rowData.Party === "R") {
+                cell.addClass("chairred"); // Red for Republican Chair
+            } else if (rowData.Party === "D") {
+                cell.addClass("chairblue"); // Blue for Democrat Chair
+            }
+        } else if (isViceChair) {
+            if (rowData.Party === "R") {
+                cell.addClass("vicechairred"); // Light Red for Republican Vice Chair
+            } else if (rowData.Party === "D") {
+                cell.addClass("vicechairblue"); // Light Blue for Democrat Vice Chair
+            }
+        }
+    });
+
+    table.column().cells().invalidate();
+    table.column().render();
+
+    // Redraw the table after sorting
+    table
+        .order([
+            { name: "isChair", dir: "desc" },
+            { name: "isViceChair", dir: "desc" },
+            { name: "lastName", dir: "asc" },
+            { name: "firstName", dir: "asc" },
+        ])
+        .draw();
+};
 
   
+  
+
   window.filterNew = function () {
     table.columns([6]).search("Newly Elected").draw();
   };
@@ -443,9 +625,39 @@ window.loadData = (json, officeFilter, platform) => {
   };
 
   window.filterAll = function () {
-    committeeName = 'Legislators';
-    table.search("").columns().search("").draw();
+    displayCom = false;
+    committeeName = "Legislators";
+  
+    // Ensure `table` refers to the DataTables instance
+    const dataTable = $('#table').DataTable();
+  
+    // Clear highlights from the 3rd <td>
+    dataTable.rows().every(function () {
+      $(this.node()).find("td:eq(2)").removeClass("highlight-cell");
+    });
+  
+    // Clear all filters
+    dataTable.search("").columns().search("").draw();
+  
+    // Update the header title manually
+    const headerDiv = document.getElementById("headerDiv");
+    headerDiv.textContent = committeeName + " (" + dataTable.rows().count() + ")";
+
+    table.column().cells().invalidate();
+    table.column().render();
+
+    // Redraw the table after sorting
+    table
+      .order([
+        { name: "lastName", dir: "asc" },
+        { name: "firstName", dir: "asc" },
+      ])
+      .draw();
+
   };
+  
+  
+  
 
   window.callFM = function (result) {
     FileMaker.PerformScript("wv_runScript", JSON.stringify(result));
@@ -465,14 +677,10 @@ window.loadData = (json, officeFilter, platform) => {
   window.exportFM = function () {
     let dataExport = table.buttons.exportData();
     dataExport = dataExport.body;
-    let data = dataExport.map(subArr => subArr[11]);
+    let data = dataExport.map((subArr) => subArr[11]);
     data = JSON.stringify(data);
     console.log(data);
-    FileMaker.PerformScriptWithOption("wv_Export", data, "0")
-    };
+    FileMaker.PerformScriptWithOption("wv_Export", data, "0");
+  };
 
 };
-
-
-
-

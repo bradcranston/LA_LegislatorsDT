@@ -2,3 +2,6 @@
 2024-04-08 00:02:40.455 -0400	jsDev.fmp12	0	*** Started consistency check of improperly closed file, total of 174 block(s) to check
 2024-04-08 00:02:40.456 -0400	jsDev.fmp12	0	Reset maximum block sequence number to 911310
 2024-04-08 00:02:40.456 -0400	jsDev.fmp12	0	*** Completed consistency check, checked 174 block(s)
+2024-11-16 10:25:33.557 -0500	jsDev.fmp12	0	*** Started consistency check of improperly closed file, total of 239 block(s) to check
+2024-11-16 10:25:33.558 -0500	jsDev.fmp12	0	Reset maximum block sequence number to 944748
+2024-11-16 10:25:33.559 -0500	jsDev.fmp12	0	*** Completed consistency check, checked 239 block(s)

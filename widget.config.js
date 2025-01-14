@@ -1,6 +1,6 @@
 module.exports = {
-  widgetName: "jsDev",
+  widgetName: "LeglislatorsDT",
   server: "$",
-  file: "jsDev",
+  file: "LegisACT",
   uploadScript: "UploadToHTML",
 };

@@ -53,8 +53,35 @@ tr:last-child {
 
 }
 
+/* Highlight styles for Chair and Vice Chair */
+
+/* Chair - Republican (Red) */
+.chairred {
+  color: #FF0000;
+  font-weight: bold;
+}
+
+/* Chair - Democrat (Blue) */
+.chairblue {
+  color: #0000FF;
+  font-weight: bold;
+}
+
+/* Vice Chair - Republican (Light Red) */
+.vicechairred {
+  color: #FF6666;
+  font-weight: bold;
+}
+
+/* Vice Chair - Democrat (Light Blue) */
+.vicechairblue {
+  color: #6666FF;
+  font-weight: bold;
+}
+
+
+
 .headerDiv{
-  height: 14px;
   font-family: 'Verdana';
   font-size: 14px;
   font-weight: 800;
@@ -65,6 +92,10 @@ tr:last-child {
   z-index: 10;
 }
 
+.highlight-cell {
+  background-color: yellow;
+  font-weight: bold;
+}
 
 
 .subText{
@@ -75,7 +106,6 @@ tr:last-child {
 }
 
 .bold{
-  color: #000;
   font-weight: bold;
   font-size: 13px;
   width: 120px;
@@ -209,6 +239,10 @@ td:nth-child(5){
   width: 0px;
 }
 
+.green{
+  color: green;
+}
+
 .vlClear {
   border-left: 6px solid ;
   border-color: white;
@@ -241,10 +275,12 @@ td:nth-child(5){
 
 .dt-scroll-body{
   border-color: #b0bfce;
-color: #b0bfce;
 }
+
 
 
   div.dt-scroll-body {
     border-bottom-width: 10px;
+    border-bottom-color: #b0bfce;
   }
+
